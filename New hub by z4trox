@@ -19,7 +19,7 @@ local Window = Rayfield:CreateWindow({
       Invite = "Cf3cmK5uwB",
       RememberJoins = true
    },
-   KeySystem = true,
+   KeySystem = false,
    KeySettings = {
       Title = "Verify you are not a bot",
       Subtitle = "The key is on the side",
