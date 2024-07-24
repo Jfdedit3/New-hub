@@ -1,8 +1,6 @@
---Gui to Lua
---Version: 3.2
+local GUI = {}
 
---Instances:
-
+function GUI:CreateGui()
 local Googol = Instance.new("ScreenGui")
 local Notification = Instance.new("Frame")
 local title = Instance.new("TextLabel")
@@ -156,3 +154,18 @@ Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Frame_2.BorderSizePixel = 0
 Frame_2.Position = UDim2.new(0, 0, 0.116279073, 0)
 Frame_2.Size = UDim2.new(0, 455, 0, 1)
+
+    local UserInputService = game:GetService("UserInputService")
+    local gui = script.Parent -- Votre GUI ici
+
+    local function onTouch(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            local touchPosition = input.Position
+            gui.Position = UDim2.new(0, touchPosition.X, 0, touchPosition.Y)
+        end
+    end
+
+    UserInputService.InputBegan:Connect(onTouch)
+end
+
+return GUI
