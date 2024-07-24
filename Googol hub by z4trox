@@ -1,7 +1,7 @@
--- Gui to Lua
--- Version: 3.2
+--Gui to Lua
+--Version: 3.2
 
--- Instances:
+--Instances:
 
 local Googol = Instance.new("ScreenGui")
 local Notification = Instance.new("Frame")
