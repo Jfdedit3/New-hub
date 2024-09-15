@@ -156,7 +156,7 @@ local function executeScriptAndDestroyGui()
 	if success then
 		wait(1);
 		TABLE_TableIndirection["screenGui%0"]:Destroy();
-		print("GUI détruit après l'exécution du script.");
+		print("gui destroy");
 	else
 		warn("Erreur lors de l'exécution du script : " .. errorMessage);
 	end
