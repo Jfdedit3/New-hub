@@ -22,12 +22,14 @@ local submitButton = Instance.new("TextButton")
 local getKeyButton = Instance.new("TextButton") -- Nouveau bouton "Get Key"
 local resultLabel = Instance.new("TextLabel")
 local imageLabel = Instance.new("ImageLabel") -- Ajouter un ImageLabel pour l'image
+local closeButton = Instance.new("TextButton") -- Nouveau bouton "Close"
 
 -- Créer des UICorners pour arrondir les coins
 local frameCorner = Instance.new("UICorner")
 local submitButtonCorner = Instance.new("UICorner")
 local getKeyButtonCorner = Instance.new("UICorner")
 local keyInputCorner = Instance.new("UICorner")
+local closeButtonCorner = Instance.new("UICorner") -- UICorner pour le bouton "Close"
 
 -- Ajouter le ScreenGui au joueur
 screenGui.Name = "KeySystemGui"
@@ -92,6 +94,19 @@ resultLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 resultLabel.BackgroundTransparency = 1
 resultLabel.TextScaled = true
 
+-- Configurer le bouton "Close" (TextButton)
+closeButton.Parent = frame
+closeButton.Size = UDim2.new(0, 40, 0, 40)
+closeButton.Position = UDim2.new(1, -50, 0, 10)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextScaled = true
+
+-- Ajouter UICorner au bouton "Close"
+closeButtonCorner.CornerRadius = UDim.new(0, 12)
+closeButtonCorner.Parent = closeButton
+
 -- Fonction pour envoyer une notification
 local function sendNotification(title, text)
     StarterGui:SetCore("SendNotification", {
@@ -135,8 +150,16 @@ local function getKey()
     resultLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
 end
 
+-- Fonction pour fermer le GUI
+local function closeGui()
+    screenGui:Destroy()
+end
+
 -- Connecter la fonction de vérification au bouton "Submit"
 submitButton.MouseButton1Click:Connect(checkKey)
 
 -- Connecter la fonction de récupération de clé au bouton "Get Key"
 getKeyButton.MouseButton1Click:Connect(getKey)
+
+-- Connecter la fonction de fermeture au bouton "Close"
+closeButton.MouseButton1Click:Connect(closeGui)
