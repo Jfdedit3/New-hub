@@ -26,7 +26,7 @@ textLabel.BackgroundTransparency = 1 -- Transparence du fond
 textLabel.Text = "Welcome To Honoka!!" -- Texte à afficher
 textLabel.Font = Enum.Font.GothamBold -- Police du texte
 textLabel.TextSize = 24 -- Taille du texte
-textLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Couleur rouge personnalisée pour le texte
 textLabel.TextScaled = true -- Ajuste automatiquement la taille du texte
 textLabel.TextTransparency = 1 -- Commence complètement transparent
 
