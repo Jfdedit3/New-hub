@@ -1,0 +1,81 @@
+local screenGui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local uiCorner = Instance.new("UICorner")
+local textLabel = Instance.new("TextLabel") -- Création du TextLabel
+
+-- Configuration de ScreenGui
+screenGui.Name = "RoundedGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Configuration du Frame (la boîte)
+frame.Parent = screenGui
+frame.BackgroundColor3 = Color3.fromRGB(30, 144, 255) -- Bleu
+frame.Position = UDim2.new(0.5, -100, 1, 0) -- Commence hors de l'écran (en bas)
+frame.Size = UDim2.new(0, 180, 0, 80) -- Taille initiale plus petite
+frame.BackgroundTransparency = 1 -- Commence complètement transparent
+
+-- Configuration du UICorner (coins arrondis)
+uiCorner.CornerRadius = UDim.new(0, 20) -- Rayon des coins
+uiCorner.Parent = frame
+
+-- Configuration du TextLabel (texte au centre)
+textLabel.Parent = frame
+textLabel.Size = UDim2.new(1, 0, 1, 0) -- Remplit tout le cadre
+textLabel.Position = UDim2.new(0, 0, 0, 0) -- Position centré
+textLabel.BackgroundTransparency = 1 -- Transparence du fond
+textLabel.Text = "Welcome To Honoka!!" -- Texte à afficher
+textLabel.Font = Enum.Font.GothamBold -- Police du texte
+textLabel.TextSize = 24 -- Taille du texte
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+textLabel.TextScaled = true -- Ajuste automatiquement la taille du texte
+textLabel.TextTransparency = 1 -- Commence complètement transparent
+
+-- Fonction pour animer l'introduction
+local function animateIntro()
+    -- Animation de position (glissement vers le centre)
+    frame:TweenPosition(UDim2.new(0.5, -100, 0.5, -50), "Out", "Quad", 2, true)
+
+    -- Animation de transparence (effet fondu)
+    local tweenService = game:GetService("TweenService")
+    local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+    local transparencyTween = tweenService:Create(frame, tweenInfo, {BackgroundTransparency = 0})
+    transparencyTween:Play()
+
+    -- Animation de taille (agrandissement)
+    frame:TweenSize(UDim2.new(0, 200, 0, 100), "Out", "Quad", 2, true)
+
+    -- Attendre que l'animation du cadre soit terminée (2 secondes)
+    wait(2)
+
+    -- Animation de transparence du texte (effet fondu après l'animation du cadre)
+    local textTransparencyTween = tweenService:Create(textLabel, tweenInfo, {TextTransparency = 0})
+    textTransparencyTween:Play()
+
+    -- Attendre que le texte apparaisse complètement (2 secondes pour l'animation du texte)
+    wait(2)
+end
+
+-- Fonction pour exécuter le script externe et détruire le GUI
+local function executeScriptAndDestroyGui()
+    -- Exécuter le script externe
+    local success, errorMessage = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jfdedit3/New-hub/main/nameless%20exec.lua"))()
+    end)
+
+    -- Si l'exécution réussit, on détruit le GUI après que l'animation du texte soit terminée
+    if success then
+        wait(1) -- Ajouter un petit délai supplémentaire pour être sûr que tout est visible
+        screenGui:Destroy()
+        print("GUI détruit après l'exécution du script.")
+    else
+        warn("Erreur lors de l'exécution du script : " .. errorMessage)
+    end
+end
+
+-- Lance l'animation après un délai
+wait(1)
+animateIntro()
+
+-- Appel de la fonction pour exécuter le script et détruire le GUI
+executeScriptAndDestroyGui()
