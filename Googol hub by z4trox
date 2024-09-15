@@ -1,81 +1,166 @@
-local screenGui = Instance.new("ScreenGui")
-local frame = Instance.new("Frame")
-local uiCorner = Instance.new("UICorner")
-local textLabel = Instance.new("TextLabel") -- Création du TextLabel
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.7) ~  Much Love, Ferib 
 
--- Configuration de ScreenGui
-screenGui.Name = "RoundedGui"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]]--
 
--- Configuration du Frame (la boîte)
-frame.Parent = screenGui
-frame.BackgroundColor3 = Color3.fromRGB(30, 144, 255) -- Bleu
-frame.Position = UDim2.new(0.5, -100, 1, 0) -- Commence hors de l'écran (en bas)
-frame.Size = UDim2.new(0, 180, 0, 80) -- Taille initiale plus petite
-frame.BackgroundTransparency = 1 -- Commence complètement transparent
-
--- Configuration du UICorner (coins arrondis)
-uiCorner.CornerRadius = UDim.new(0, 20) -- Rayon des coins
-uiCorner.Parent = frame
-
--- Configuration du TextLabel (texte au centre)
-textLabel.Parent = frame
-textLabel.Size = UDim2.new(1, 0, 1, 0) -- Remplit tout le cadre
-textLabel.Position = UDim2.new(0, 0, 0, 0) -- Position centré
-textLabel.BackgroundTransparency = 1 -- Transparence du fond
-textLabel.Text = "Welcome To Honoka!!" -- Texte à afficher
-textLabel.Font = Enum.Font.GothamBold -- Police du texte
-textLabel.TextSize = 24 -- Taille du texte
-textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Couleur rouge personnalisée pour le texte
-textLabel.TextScaled = true -- Ajuste automatiquement la taille du texte
-textLabel.TextTransparency = 1 -- Commence complètement transparent
-
--- Fonction pour animer l'introduction
+bit32 = {};
+local N = 32;
+local P = 2 ^ N;
+bit32.bnot = function(x)
+	x = x % P;
+	return (P - 1) - x;
+end;
+bit32.band = function(x, y)
+	if (y == 255) then
+		return x % 256;
+	end
+	if (y == 65535) then
+		return x % 65536;
+	end
+	if (y == 4294967295) then
+		return x % 4294967296;
+	end
+	x, y = x % P, y % P;
+	local r = 0;
+	local p = 1;
+	for i = 1, N do
+		local a, b = x % 2, y % 2;
+		x, y = math.floor(x / 2), math.floor(y / 2);
+		if ((a + b) == 2) then
+			r = r + p;
+		end
+		p = 2 * p;
+	end
+	return r;
+end;
+bit32.bor = function(x, y)
+	if (y == 255) then
+		return (x - (x % 256)) + 255;
+	end
+	if (y == 65535) then
+		return (x - (x % 65536)) + 65535;
+	end
+	if (y == 4294967295) then
+		return 4294967295;
+	end
+	x, y = x % P, y % P;
+	local r = 0;
+	local p = 1;
+	for i = 1, N do
+		local a, b = x % 2, y % 2;
+		x, y = math.floor(x / 2), math.floor(y / 2);
+		if ((a + b) >= 1) then
+			r = r + p;
+		end
+		p = 2 * p;
+	end
+	return r;
+end;
+bit32.bxor = function(x, y)
+	x, y = x % P, y % P;
+	local r = 0;
+	local p = 1;
+	for i = 1, N do
+		local a, b = x % 2, y % 2;
+		x, y = math.floor(x / 2), math.floor(y / 2);
+		if ((a + b) == 1) then
+			r = r + p;
+		end
+		p = 2 * p;
+	end
+	return r;
+end;
+bit32.lshift = function(x, s_amount)
+	if (math.abs(s_amount) >= N) then
+		return 0;
+	end
+	x = x % P;
+	if (s_amount < 0) then
+		return math.floor(x * (2 ^ s_amount));
+	else
+		return (x * (2 ^ s_amount)) % P;
+	end
+end;
+bit32.rshift = function(x, s_amount)
+	if (math.abs(s_amount) >= N) then
+		return 0;
+	end
+	x = x % P;
+	if (s_amount > 0) then
+		return math.floor(x * (2 ^ -s_amount));
+	else
+		return (x * (2 ^ -s_amount)) % P;
+	end
+end;
+bit32.arshift = function(x, s_amount)
+	if (math.abs(s_amount) >= N) then
+		return 0;
+	end
+	x = x % P;
+	if (s_amount > 0) then
+		local add = 0;
+		if (x >= (P / 2)) then
+			add = P - (2 ^ (N - s_amount));
+		end
+		return math.floor(x * (2 ^ -s_amount)) + add;
+	else
+		return (x * (2 ^ -s_amount)) % P;
+	end
+end;
+local TABLE_TableIndirection = {};
+TABLE_TableIndirection["screenGui%0"] = Instance.new("ScreenGui");
+TABLE_TableIndirection["frame%0"] = Instance.new("Frame");
+TABLE_TableIndirection["uiCorner%0"] = Instance.new("UICorner");
+TABLE_TableIndirection["textLabel%0"] = Instance.new("TextLabel");
+TABLE_TableIndirection["screenGui%0"].Name = "RoundedGui";
+TABLE_TableIndirection["screenGui%0"].Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui");
+TABLE_TableIndirection["frame%0"].Parent = TABLE_TableIndirection["screenGui%0"];
+TABLE_TableIndirection["frame%0"].BackgroundColor3 = Color3.fromRGB(30, 144, 255);
+TABLE_TableIndirection["frame%0"].Position = UDim2.new(0.5, -100, 1, 0);
+TABLE_TableIndirection["frame%0"].Size = UDim2.new(0, 180, 0, 80);
+TABLE_TableIndirection["frame%0"].BackgroundTransparency = 1;
+TABLE_TableIndirection["uiCorner%0"].CornerRadius = UDim.new(0, 20);
+TABLE_TableIndirection["uiCorner%0"].Parent = TABLE_TableIndirection["frame%0"];
+TABLE_TableIndirection["textLabel%0"].Parent = TABLE_TableIndirection["frame%0"];
+TABLE_TableIndirection["textLabel%0"].Size = UDim2.new(1, 0, 1, 0);
+TABLE_TableIndirection["textLabel%0"].Position = UDim2.new(0, 0, 0, 0);
+TABLE_TableIndirection["textLabel%0"].BackgroundTransparency = 1;
+TABLE_TableIndirection["textLabel%0"].Text = "Welcome To Honoka!!";
+TABLE_TableIndirection["textLabel%0"].Font = Enum.Font.GothamBold;
+TABLE_TableIndirection["textLabel%0"].TextSize = 24;
+TABLE_TableIndirection["textLabel%0"].TextColor3 = Color3.fromRGB(255, 0, 0);
+TABLE_TableIndirection["textLabel%0"].TextScaled = true;
+TABLE_TableIndirection["textLabel%0"].TextTransparency = 1;
 local function animateIntro()
-    -- Animation de position (glissement vers le centre)
-    frame:TweenPosition(UDim2.new(0.5, -100, 0.5, -50), "Out", "Quad", 2, true)
-
-    -- Animation de transparence (effet fondu)
-    local tweenService = game:GetService("TweenService")
-    local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-    local transparencyTween = tweenService:Create(frame, tweenInfo, {BackgroundTransparency = 0})
-    transparencyTween:Play()
-
-    -- Animation de taille (agrandissement)
-    frame:TweenSize(UDim2.new(0, 200, 0, 100), "Out", "Quad", 2, true)
-
-    -- Attendre que l'animation du cadre soit terminée (2 secondes)
-    wait(2)
-
-    -- Animation de transparence du texte (effet fondu après l'animation du cadre)
-    local textTransparencyTween = tweenService:Create(textLabel, tweenInfo, {TextTransparency = 0})
-    textTransparencyTween:Play()
-
-    -- Attendre que le texte apparaisse complètement (2 secondes pour l'animation du texte)
-    wait(2)
+	TABLE_TableIndirection["frame%0"]:TweenPosition(UDim2.new(0.5, -100, 0.5, -50), "Out", "Quad", 2, true);
+	TABLE_TableIndirection["tweenService%0"] = game:GetService("TweenService");
+	TABLE_TableIndirection["tweenInfo%0"] = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out);
+	TABLE_TableIndirection["transparencyTween%0"] = TABLE_TableIndirection["tweenService%0"]:Create(TABLE_TableIndirection["frame%0"], TABLE_TableIndirection["tweenInfo%0"], {BackgroundTransparency=0});
+	TABLE_TableIndirection["transparencyTween%0"]:Play();
+	TABLE_TableIndirection["frame%0"]:TweenSize(UDim2.new(0, 200, 0, 100), "Out", "Quad", 2, true);
+	wait(2);
+	TABLE_TableIndirection["textTransparencyTween%0"] = TABLE_TableIndirection["tweenService%0"]:Create(TABLE_TableIndirection["textLabel%0"], TABLE_TableIndirection["tweenInfo%0"], {TextTransparency=0});
+	TABLE_TableIndirection["textTransparencyTween%0"]:Play();
+	wait(2);
 end
-
--- Fonction pour exécuter le script externe et détruire le GUI
 local function executeScriptAndDestroyGui()
-    -- Exécuter le script externe
-    local success, errorMessage = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jfdedit3/New-hub/main/nameless%20exec.lua"))()
-    end)
-
-    -- Si l'exécution réussit, on détruit le GUI après que l'animation du texte soit terminée
-    if success then
-        wait(1) -- Ajouter un petit délai supplémentaire pour être sûr que tout est visible
-        screenGui:Destroy()
-        print("GUI détruit après l'exécution du script.")
-    else
-        warn("Erreur lors de l'exécution du script : " .. errorMessage)
-    end
+	local success, errorMessage = pcall(function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Jfdedit3/New-hub/main/nameless%20exec.lua"))();
+	end);
+	if success then
+		wait(1);
+		TABLE_TableIndirection["screenGui%0"]:Destroy();
+		print("GUI détruit après l'exécution du script.");
+	else
+		warn("Erreur lors de l'exécution du script : " .. errorMessage);
+	end
 end
-
--- Lance l'animation après un délai
-wait(1)
-animateIntro()
-
--- Appel de la fonction pour exécuter le script et détruire le GUI
-executeScriptAndDestroyGui()
+wait(1);
+animateIntro();
+executeScriptAndDestroyGui();
