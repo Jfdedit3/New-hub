@@ -21,8 +21,9 @@ uiCorner.Parent = frame
 
 -- Configuration de l'ImageLabel (image à côté du texte)
 imageLabel.Parent = frame
-imageLabel.Size = UDim2.new(0, 100, 0, 100) -- Taille de l'image
-imageLabel.Position = UDim2.new(0.5, -150, 0.1, 0) -- Position de l'image
+imageLabel.Size = UDim2.new(0, 100, 0, 100) -- Taille initiale de l'image
+imageLabel.Position = UDim2.new(0.5, -50, 0.5, -100) -- Position de l'image, haut collé au centre
+imageLabel.AnchorPoint = Vector2.new(0.5, 0) -- Ancre le haut de l'image au centre du cadre
 imageLabel.BackgroundTransparency = 1 -- Transparence du fond de l'image
 imageLabel.Image = "rbxassetid://106909593768778" -- ID de l'image
 imageLabel.ImageTransparency = 1 -- Commence complètement transparent
@@ -54,6 +55,10 @@ local function animateIntro()
     -- Animation de taille (agrandissement du cadre)
     frame:TweenSize(UDim2.new(0, 300, 0, 200), "Out", "Quad", 2, true)
 
+    -- Animation de taille pour l'image (agrandissement en diagonale)
+    local imageSizeTween = tweenService:Create(imageLabel, tweenInfo, {Size = UDim2.new(0, 150, 0, 150)})
+    imageSizeTween:Play()
+
     -- Animation de transparence (effet fondu pour l'image)
     local imageTransparencyTween = tweenService:Create(imageLabel, tweenInfo, {ImageTransparency = 0})
     imageTransparencyTween:Play()
@@ -64,6 +69,9 @@ local function animateIntro()
 
     -- Attendre que les animations soient terminées (2 secondes pour les animations)
     wait(2)
+
+    -- Réduire la taille de l'image à sa taille finale
+    imageLabel:TweenSize(UDim2.new(0, 100, 0, 100), "Out", "Quad", 1, true)
 end
 
 -- Fonction pour exécuter le script externe et détruire le GUI
