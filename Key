@@ -1,0 +1,142 @@
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService") -- Pour obtenir le script en ligne
+local StarterGui = game:GetService("StarterGui") -- Pour envoyer la notification
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Clé correcte modifiée
+local correctKey = "honoka_1"
+
+-- URL du script à exécuter
+local scriptUrl = "https://hastebin.skyra.pw/raw/sugebehixo"
+
+-- ID de l'image à afficher
+local imageId = "106909593768778"
+
+-- Créer le GUI
+local screenGui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local keyInput = Instance.new("TextBox")
+local submitButton = Instance.new("TextButton")
+local getKeyButton = Instance.new("TextButton") -- Nouveau bouton "Get Key"
+local resultLabel = Instance.new("TextLabel")
+local imageLabel = Instance.new("ImageLabel") -- Ajouter un ImageLabel pour l'image
+
+-- Créer des UICorners pour arrondir les coins
+local frameCorner = Instance.new("UICorner")
+local submitButtonCorner = Instance.new("UICorner")
+local getKeyButtonCorner = Instance.new("UICorner")
+local keyInputCorner = Instance.new("UICorner")
+
+-- Ajouter le ScreenGui au joueur
+screenGui.Name = "KeySystemGui"
+screenGui.Parent = playerGui
+
+-- Configurer le cadre principal (Frame)
+frame.Parent = screenGui
+frame.Size = UDim2.new(1, 0, 1, 0) -- Occuper toute la surface de l'écran
+frame.BackgroundTransparency = 1 -- Rendre le fond transparent
+frame.BorderSizePixel = 0
+
+-- Configurer l'image (ImageLabel) pour qu'elle occupe tout le cadre
+imageLabel.Parent = frame
+imageLabel.Size = UDim2.new(1, 0, 1, 0) -- Prendre toute la surface du cadre
+imageLabel.Position = UDim2.new(0, 0, 0, 0) -- Positionner en haut à gauche
+imageLabel.Image = "rbxassetid://" .. imageId
+imageLabel.BackgroundTransparency = 1 -- Rendre l'arrière-plan transparent
+
+-- Configurer l'entrée de texte (TextBox)
+keyInput.Parent = frame
+keyInput.Size = UDim2.new(0, 250, 0, 50)
+keyInput.Position = UDim2.new(0.5, -125, 0.4, 0)
+keyInput.PlaceholderText = "Enter Key"
+keyInput.Text = ""
+keyInput.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+keyInput.TextScaled = true
+
+-- Ajouter UICorner au TextBox
+keyInputCorner.CornerRadius = UDim.new(0, 12)
+keyInputCorner.Parent = keyInput
+
+-- Configurer le bouton de soumission (TextButton)
+submitButton.Parent = frame
+submitButton.Size = UDim2.new(0, 100, 0, 40)
+submitButton.Position = UDim2.new(0.5, -50, 0.55, 0)
+submitButton.Text = "Submit"
+submitButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+submitButton.TextScaled = true
+
+-- Ajouter UICorner au bouton "Submit"
+submitButtonCorner.CornerRadius = UDim.new(0, 12)
+submitButtonCorner.Parent = submitButton
+
+-- Configurer le bouton "Get Key" (TextButton)
+getKeyButton.Parent = frame
+getKeyButton.Size = UDim2.new(0, 100, 0, 40)
+getKeyButton.Position = UDim2.new(0.5, -50, 0.65, 0) -- Placer en dessous de "Submit"
+getKeyButton.Text = "Get Key"
+getKeyButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+getKeyButton.TextScaled = true
+
+-- Ajouter UICorner au bouton "Get Key"
+getKeyButtonCorner.CornerRadius = UDim.new(0, 12)
+getKeyButtonCorner.Parent = getKeyButton
+
+-- Configurer l'étiquette de résultat (TextLabel)
+resultLabel.Parent = frame
+resultLabel.Size = UDim2.new(0, 250, 0, 50)
+resultLabel.Position = UDim2.new(0.5, -125, 0.8, 0)
+resultLabel.Text = ""
+resultLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+resultLabel.BackgroundTransparency = 1
+resultLabel.TextScaled = true
+
+-- Fonction pour envoyer une notification
+local function sendNotification(title, text)
+    StarterGui:SetCore("SendNotification", {
+        Title = title;
+        Text = text;
+        Duration = 2; -- Réduit la durée de la notification à 2 secondes
+    })
+end
+
+-- Fonction pour vérifier la clé et exécuter le script
+local function checkKey()
+    local enteredKey = keyInput.Text
+
+    if enteredKey == correctKey then
+        resultLabel.Text = "Access Granted!"
+        resultLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+        sendNotification("Key Status", "Key Valid!") -- Afficher la notification
+        wait(2)
+        -- Cache le GUI une fois la clé validée
+        screenGui:Destroy()
+
+        -- Télécharger et exécuter le script externe
+        local success, result = pcall(function()
+            local scriptContent = game:HttpGet(scriptUrl, true) -- Récupère le script
+            loadstring(scriptContent)() -- Exécute le script
+        end)
+
+        if not success then
+            warn("Erreur lors de l'exécution du script : " .. tostring(result))
+        end
+    else
+        resultLabel.Text = "Access Denied!"
+        resultLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+    end
+end
+
+-- Fonction pour le bouton "Get Key"
+local function getKey()
+    -- Affiche le lien dans le label
+    resultLabel.Text = "Get your key here: https://pastebin.com/raw/emqv4F8i"
+    resultLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+end
+
+-- Connecter la fonction de vérification au bouton "Submit"
+submitButton.MouseButton1Click:Connect(checkKey)
+
+-- Connecter la fonction de récupération de clé au bouton "Get Key"
+getKeyButton.MouseButton1Click:Connect(getKey)
