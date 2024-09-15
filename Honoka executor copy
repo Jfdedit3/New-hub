@@ -1,6 +1,7 @@
 local screenGui = Instance.new("ScreenGui")
 local frame = Instance.new("Frame")
 local uiCorner = Instance.new("UICorner")
+local imageLabel = Instance.new("ImageLabel") -- Création de l'ImageLabel
 local textLabel = Instance.new("TextLabel") -- Création du TextLabel
 
 -- Configuration de ScreenGui
@@ -10,18 +11,26 @@ screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 -- Configuration du Frame (la boîte)
 frame.Parent = screenGui
 frame.BackgroundColor3 = Color3.fromRGB(30, 144, 255) -- Bleu
-frame.Position = UDim2.new(0.5, -100, 1, 0) -- Commence hors de l'écran (en bas)
-frame.Size = UDim2.new(0, 180, 0, 80) -- Taille initiale plus petite
+frame.Position = UDim2.new(0.5, -150, 1, 0) -- Commence hors de l'écran (en bas)
+frame.Size = UDim2.new(0, 300, 0, 200) -- Taille initiale plus grande pour accueillir image et texte
 frame.BackgroundTransparency = 1 -- Commence complètement transparent
 
 -- Configuration du UICorner (coins arrondis)
 uiCorner.CornerRadius = UDim.new(0, 20) -- Rayon des coins
 uiCorner.Parent = frame
 
--- Configuration du TextLabel (texte au centre)
+-- Configuration de l'ImageLabel (image à côté du texte)
+imageLabel.Parent = frame
+imageLabel.Size = UDim2.new(0, 100, 0, 100) -- Taille de l'image
+imageLabel.Position = UDim2.new(0.5, -150, 0.1, 0) -- Position de l'image
+imageLabel.BackgroundTransparency = 1 -- Transparence du fond de l'image
+imageLabel.Image = "rbxassetid://106909593768778" -- ID de l'image
+imageLabel.ImageTransparency = 1 -- Commence complètement transparent
+
+-- Configuration du TextLabel (texte en dessous de l'image)
 textLabel.Parent = frame
-textLabel.Size = UDim2.new(1, 0, 1, 0) -- Remplit tout le cadre
-textLabel.Position = UDim2.new(0, 0, 0, 0) -- Position centré
+textLabel.Size = UDim2.new(0, 200, 0, 50) -- Taille du texte
+textLabel.Position = UDim2.new(0.5, -100, 0.75, 0) -- Position du texte sous l'image
 textLabel.BackgroundTransparency = 1 -- Transparence du fond
 textLabel.Text = "Welcome To Honoka!!" -- Texte à afficher
 textLabel.Font = Enum.Font.GothamBold -- Police du texte
@@ -33,26 +42,27 @@ textLabel.TextTransparency = 1 -- Commence complètement transparent
 -- Fonction pour animer l'introduction
 local function animateIntro()
     -- Animation de position (glissement vers le centre)
-    frame:TweenPosition(UDim2.new(0.5, -100, 0.5, -50), "Out", "Quad", 2, true)
+    frame:TweenPosition(UDim2.new(0.5, -150, 0.5, -100), "Out", "Quad", 2, true)
 
-    -- Animation de transparence (effet fondu)
+    -- Animation de transparence (effet fondu pour le cadre)
     local tweenService = game:GetService("TweenService")
     local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-    local transparencyTween = tweenService:Create(frame, tweenInfo, {BackgroundTransparency = 0})
-    transparencyTween:Play()
+    local frameTransparencyTween = tweenService:Create(frame, tweenInfo, {BackgroundTransparency = 0})
+    frameTransparencyTween:Play()
 
-    -- Animation de taille (agrandissement)
-    frame:TweenSize(UDim2.new(0, 200, 0, 100), "Out", "Quad", 2, true)
+    -- Animation de taille (agrandissement du cadre)
+    frame:TweenSize(UDim2.new(0, 300, 0, 200), "Out", "Quad", 2, true)
 
-    -- Attendre que l'animation du cadre soit terminée (2 secondes)
-    wait(2)
+    -- Animation de transparence (effet fondu pour l'image)
+    local imageTransparencyTween = tweenService:Create(imageLabel, tweenInfo, {ImageTransparency = 0})
+    imageTransparencyTween:Play()
 
-    -- Animation de transparence du texte (effet fondu après l'animation du cadre)
+    -- Animation de transparence (effet fondu pour le texte)
     local textTransparencyTween = tweenService:Create(textLabel, tweenInfo, {TextTransparency = 0})
     textTransparencyTween:Play()
 
-    -- Attendre que le texte apparaisse complètement (2 secondes pour l'animation du texte)
+    -- Attendre que les animations soient terminées (2 secondes pour les animations)
     wait(2)
 end
 
