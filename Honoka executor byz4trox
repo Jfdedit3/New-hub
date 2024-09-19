@@ -1,1 +1,99 @@
-local v0=game:GetService("Players");local v1=game:GetService("HttpService");local v2=game:GetService("StarterGui");local v3=v0.LocalPlayer;local v4=v3:WaitForChild("PlayerGui");local v5="honoka_1";local v6="https://hastebin.skyra.pw/raw/sugebehixo";local v7="106909593768778";local v8=Instance.new("ScreenGui");local v9=Instance.new("Frame");local v10=Instance.new("TextBox");local v11=Instance.new("TextButton");local v12=Instance.new("TextButton");local v13=Instance.new("TextLabel");local v14=Instance.new("ImageLabel");local v15=Instance.new("TextButton");local v16=Instance.new("UICorner");local v17=Instance.new("UICorner");local v18=Instance.new("UICorner");local v19=Instance.new("UICorner");local v20=Instance.new("UICorner");v8.Name="KeySystemGui";v8.Parent=v4;v9.Parent=v8;v9.Size=UDim2.new(1,0,1,0);v9.BackgroundTransparency=1;v9.BorderSizePixel=0;v14.Parent=v9;v14.Size=UDim2.new(1,0,1,0);v14.Position=UDim2.new(0,0,0,0);v14.Image="rbxassetid://"   .. v7 ;v14.BackgroundTransparency=1;v10.Parent=v9;v10.Size=UDim2.new(0,250,0,50);v10.Position=UDim2.new(0.5, -125,0.4,0);v10.PlaceholderText="Enter Key";v10.Text="";v10.BackgroundColor3=Color3.fromRGB(255,255,255);v10.TextScaled=true;v19.CornerRadius=UDim.new(0,12);v19.Parent=v10;v11.Parent=v9;v11.Size=UDim2.new(0,100,0,40);v11.Position=UDim2.new(0.5, -50,0.55,0);v11.Text="Submit";v11.BackgroundColor3=Color3.fromRGB(0,255,0);v11.TextScaled=true;v17.CornerRadius=UDim.new(0,12);v17.Parent=v11;v12.Parent=v9;v12.Size=UDim2.new(0,100,0,40);v12.Position=UDim2.new(0.5, -50,0.65,0);v12.Text="Get Key";v12.BackgroundColor3=Color3.fromRGB(0,0,255);v12.TextScaled=true;v18.CornerRadius=UDim.new(0,12);v18.Parent=v12;v13.Parent=v9;v13.Size=UDim2.new(0,250,0,50);v13.Position=UDim2.new(0.5, -125,0.8,0);v13.Text="";v13.TextColor3=Color3.fromRGB(255,255,255);v13.BackgroundTransparency=1;v13.TextScaled=true;v15.Parent=v9;v15.Size=UDim2.new(0,40,0,40);v15.Position=UDim2.new(1, -50,0,10);v15.Text="X";v15.BackgroundColor3=Color3.fromRGB(255,0,0);v15.TextColor3=Color3.fromRGB(255,255,255);v15.TextScaled=true;v20.CornerRadius=UDim.new(0,12);v20.Parent=v15;local function v73(v77,v78) v2:SetCore("SendNotification",{Title=v77,Text=v78,Duration=2});end local function v74() local v79=v10.Text;if (v79==v5) then v13.Text="Access Granted!";v13.TextColor3=Color3.fromRGB(0,255,0);v73("Key Status","Key Valid!");wait(2);v8:Destroy();local v84,v85=pcall(function() local v88=game:HttpGet(v6,true);loadstring(v88)();end);if  not v84 then warn("Erreur lors de l'exécution du script : "   .. tostring(v85) );end else v13.Text="Access Denied!";v13.TextColor3=Color3.fromRGB(255,0,0);end end local function v75() v13.Text="Get your key here: https://pastebin.com/raw/emqv4F8i";v13.TextColor3=Color3.fromRGB(255,0,0);end local function v76() v8:Destroy();end v11.MouseButton1Click:Connect(v74);v12.MouseButton1Click:Connect(v75);v15.MouseButton1Click:Connect(v76);
+local screenGui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local uiCorner = Instance.new("UICorner")
+local imageLabel = Instance.new("ImageLabel") -- Création de l'ImageLabel
+local textLabel = Instance.new("TextLabel") -- Création du TextLabel
+
+-- Configuration de ScreenGui
+screenGui.Name = "RoundedGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Configuration du Frame (la boîte)
+frame.Parent = screenGui
+frame.BackgroundColor3 = Color3.fromRGB(30, 144, 255) -- Bleu
+frame.Position = UDim2.new(0.5, -150, 1, 0) -- Commence hors de l'écran (en bas)
+frame.Size = UDim2.new(0, 300, 0, 200) -- Taille initiale plus grande pour accueillir image et texte
+frame.BackgroundTransparency = 1 -- Commence complètement transparent
+
+-- Configuration du UICorner (coins arrondis)
+uiCorner.CornerRadius = UDim.new(0, 20) -- Rayon des coins
+uiCorner.Parent = frame
+
+-- Configuration de l'ImageLabel (image à côté du texte)
+imageLabel.Parent = frame
+imageLabel.Size = UDim2.new(0, 100, 0, 100) -- Taille initiale de l'image
+imageLabel.Position = UDim2.new(0.5, -50, 0.5, -100) -- Position de l'image, haut collé au centre
+imageLabel.AnchorPoint = Vector2.new(0.5, 0) -- Ancre le haut de l'image au centre du cadre
+imageLabel.BackgroundTransparency = 1 -- Transparence du fond de l'image
+imageLabel.Image = "rbxassetid://106909593768778" -- ID de l'image
+imageLabel.ImageTransparency = 1 -- Commence complètement transparent
+
+-- Configuration du TextLabel (texte en dessous de l'image)
+textLabel.Parent = frame
+textLabel.Size = UDim2.new(0, 200, 0, 50) -- Taille du texte
+textLabel.Position = UDim2.new(0.5, -100, 0.75, 0) -- Position du texte sous l'image
+textLabel.BackgroundTransparency = 1 -- Transparence du fond
+textLabel.Text = "Welcome To Honoka!!" -- Texte à afficher
+textLabel.Font = Enum.Font.GothamBold -- Police du texte
+textLabel.TextSize = 24 -- Taille du texte
+textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Couleur rouge personnalisée pour le texte
+textLabel.TextScaled = true -- Ajuste automatiquement la taille du texte
+textLabel.TextTransparency = 1 -- Commence complètement transparent
+
+-- Fonction pour animer l'introduction
+local function animateIntro()
+    -- Animation de position (glissement vers le centre)
+    frame:TweenPosition(UDim2.new(0.5, -150, 0.5, -100), "Out", "Quad", 2, true)
+
+    -- Animation de transparence (effet fondu pour le cadre)
+    local tweenService = game:GetService("TweenService")
+    local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+    local frameTransparencyTween = tweenService:Create(frame, tweenInfo, {BackgroundTransparency = 0})
+    frameTransparencyTween:Play()
+
+    -- Animation de taille (agrandissement du cadre)
+    frame:TweenSize(UDim2.new(0, 300, 0, 200), "Out", "Quad", 2, true)
+
+    -- Animation de taille pour l'image (agrandissement en diagonale)
+    local imageSizeTween = tweenService:Create(imageLabel, tweenInfo, {Size = UDim2.new(0, 150, 0, 150)})
+    imageSizeTween:Play()
+
+    -- Animation de transparence (effet fondu pour l'image)
+    local imageTransparencyTween = tweenService:Create(imageLabel, tweenInfo, {ImageTransparency = 0})
+    imageTransparencyTween:Play()
+
+    -- Animation de transparence (effet fondu pour le texte)
+    local textTransparencyTween = tweenService:Create(textLabel, tweenInfo, {TextTransparency = 0})
+    textTransparencyTween:Play()
+
+    -- Attendre que les animations soient terminées (2 secondes pour les animations)
+    wait(2)
+
+    -- Réduire la taille de l'image à sa taille finale
+    imageLabel:TweenSize(UDim2.new(0, 100, 0, 100), "Out", "Quad", 1, true)
+end
+
+-- Fonction pour exécuter le script externe et détruire le GUI
+local function executeScriptAndDestroyGui()
+    -- Exécuter le script externe
+    local success, errorMessage = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Jfdedit3/New-hub/main/nameless%20exec.lua"))()
+    end)
+
+    -- Si l'exécution réussit, on détruit le GUI après que l'animation du texte soit terminée
+    if success then
+        wait(1) -- Ajouter un petit délai supplémentaire pour être sûr que tout est visible
+        screenGui:Destroy()
+        print("GUI détruit après l'exécution du script.")
+    else
+        warn("Erreur lors de l'exécution du script : " .. errorMessage)
+    end
+end
+
+-- Lance l'animation après un délai
+wait(1)
+animateIntro()
+
+-- Appel de la fonction pour exécuter le script et détruire le GUI
+executeScriptAndDestroyGui()
