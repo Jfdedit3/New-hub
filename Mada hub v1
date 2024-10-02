@@ -1,0 +1,176 @@
+local TweenService = game:GetService("TweenService")
+
+-- Chargement de la bibliothèque de notifications
+local NotificationLoad = loadstring(game:HttpGet('https://raw.githubusercontent.com/treeofplant/Notif/main/library.lua', true))()
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "Mada hub v3.3"
+gui.Parent = game.CoreGui
+
+-- Création du cadre principal (MainFrame)
+local fr = Instance.new("Frame")
+local TitleLabel = Instance.new("TextLabel")
+local closeBtn = Instance.new("TextButton")
+local ButtonContainer = Instance.new("ScrollingFrame")
+local buttonFrame = Instance.new("Frame")
+local FooterLabel = Instance.new("TextLabel")
+local toggleUIButton = Instance.new("TextButton")
+
+-- Configuration du cadre principal
+fr.Size = UDim2.new(0, 300, 0, 400)
+fr.Position = UDim2.new(0.5, -150, 1.0, 0)
+fr.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+fr.BorderColor3 = Color3.fromRGB(0, 0, 0)
+fr.BorderSizePixel = 2
+fr.Active = true
+fr.Draggable = true
+fr.Parent = gui
+fr.Visible = false
+
+-- Application des coins arrondis
+local function applyCorners(instance, cornerRadius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, cornerRadius)
+    corner.Parent = instance
+end
+applyCorners(fr, 15)
+
+-- Titre du cadre
+TitleLabel.Size = UDim2.new(1, 0, 0, 40)
+TitleLabel.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.Text = "Mada hub v3.3"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 18
+TitleLabel.Parent = fr
+applyCorners(TitleLabel, 10)
+
+-- Bouton de fermeture
+closeBtn.Size = UDim2.new(0, 25, 0, 25)
+closeBtn.Position = UDim2.new(0.95, -25, 0, 7)
+closeBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+closeBtn.Text = "X"
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 16
+closeBtn.Parent = fr
+applyCorners(closeBtn, 5)
+
+-- Animation d'apparition du GUI
+local function showIntroductionAnimation()
+    fr.Position = UDim2.new(0.5, -150, 0.5, -200)
+    fr.Size = UDim2.new(0, 0, 0, 0)
+    fr.Visible = true
+    fr:TweenSize(UDim2.new(0, 300, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.75, true)
+    fr:TweenPosition(UDim2.new(0.5, -150, 0.5, -200), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.75, true)
+end
+
+showIntroductionAnimation()
+
+-- Fonction pour la fermeture du GUI
+closeBtn.MouseButton1Down:Connect(function()
+    local closeTween = TweenService:Create(fr, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        Position = UDim2.new(0.5, -150, 1.0, 0),
+    })
+    closeTween:Play()
+    closeTween.Completed:Connect(function()
+        gui:Destroy()
+    end)
+end)
+
+-- Conteneur de boutons (ButtonContainer)
+ButtonContainer.Size = UDim2.new(1, 0, 1, -80)
+ButtonContainer.Position = UDim2.new(0, 0, 0, 40)
+ButtonContainer.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+ButtonContainer.ScrollBarThickness = 10
+ButtonContainer.Parent = fr
+applyCorners(ButtonContainer, 10)
+
+-- Création du cadre des boutons
+buttonFrame.Size = UDim2.new(1, 0, 0, 0)
+buttonFrame.Parent = ButtonContainer
+
+-- Liste des boutons avec URLs
+local buttons = {
+    {text = "KOLINSKI admin", url = "https://raw.githubusercontent.com/Jfdedit3/KOLINSKI/refs/heads/main/KOLINSKI.lua"},
+    {text = "Cmd Fe", url = "https://raw.githubusercontent.com/lxte/cmd/main/testing-main.lua"},
+    {text = "Honoka Executor", url = "https://raw.githubusercontent.com/Jfdedit3/honoka-executor/main/Honoka%20executor%20byz4trox"},
+    {text = "Velocity Ware", url = "https://raw.githubusercontent.com/ImNotRox1/VWare/main/Universal.lua"},
+    {text = "Nameless Music Brook", url = "https://raw.githubusercontent.com/Jfdedit3/Nameless-hub-/refs/heads/main/Nameless%20musique"},
+    {text = "Aimbot", url = "https://raw.githubusercontent.com/Jfdedit3/Aimbot-aim-assist-lock-/refs/heads/main/Aimbot-aim-assist-lock"},
+    {text = "Fps Script", url = "https://raw.githubusercontent.com/Jfdedit3/Fps/refs/heads/main/fps.lua"}
+}
+
+local totalButtonHeight = 0
+for index, buttonInfo in ipairs(buttons) do
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, -15, 0, 35)
+    button.Position = UDim2.new(0, 7.5, 0, (index - 1) * 40)
+    button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    button.Text = buttonInfo.text
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.Gotham
+    button.TextSize = 16
+    button.Parent = buttonFrame
+    applyCorners(button, 8)
+
+    -- Ajout de la fonctionnalité de bouton
+    button.MouseButton1Click:Connect(function()
+        NotificationLoad:NewNotification({
+            ["Mode"] = "Custom",
+            ["Title"] = buttonInfo.text,
+            ["Description"] = buttonInfo.text .. " is running.",
+            ["Timeout"] = 3
+        })
+        local success, err = pcall(function()
+            loadstring(game:HttpGet(buttonInfo.url, true))()
+        end)
+        if not success then
+            NotificationLoad:NewNotification({
+                ["Mode"] = "Custom",
+                ["Title"] = "Erreur",
+                ["Description"] = "Erreur lors du chargement de " .. buttonInfo.text .. ": " .. err,
+                ["Timeout"] = 5
+            })
+        end
+    end)
+
+    totalButtonHeight = totalButtonHeight + 40
+end
+
+buttonFrame.Size = UDim2.new(1, 0, 0, totalButtonHeight)
+
+-- Bouton de bascule de l'UI (Toggle UI)
+toggleUIButton.Size = UDim2.new(0, 40, 0, 40)
+toggleUIButton.Position = UDim2.new(0.5, -20, 1, -50)
+toggleUIButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+toggleUIButton.Text = "UI"
+toggleUIButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleUIButton.Font = Enum.Font.GothamBold
+toggleUIButton.TextSize = 16
+toggleUIButton.Parent = gui
+
+local isGUIVisible = true
+toggleUIButton.MouseButton1Click:Connect(function()
+    if isGUIVisible then
+        fr.Visible = false
+        isGUIVisible = false
+    else
+        fr.Visible = true
+        isGUIVisible = true
+    end
+end)
+
+-- Texte de pied de page
+FooterLabel.Size = UDim2.new(1, 0, 0, 30)
+FooterLabel.Position = UDim2.new(0, 0, 1, -30)
+FooterLabel.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+FooterLabel.Font = Enum.Font.Gotham
+FooterLabel.Text = "by z4trox | ESP script"
+FooterLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+FooterLabel.TextSize = 14
+FooterLabel.Parent = fr
+applyCorners(FooterLabel, 5)
+
+-- Ajustement final du cadre principal
+fr.Size = UDim2.new(0, 300, 0, 40 + totalButtonHeight + 60)
