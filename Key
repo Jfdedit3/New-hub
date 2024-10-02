@@ -9,7 +9,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 local correctKey = "honoka_1"
 
 -- URL du script à exécuter
-local scriptUrl = "https://h
+local scriptUrl = "https://
 pastebin.skyra.pw/raw/sugebehixo"
 
 -- ID de l'image à afficher
